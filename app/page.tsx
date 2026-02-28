@@ -10,6 +10,7 @@ export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -28,20 +29,22 @@ export default function Home() {
     fetchJobs();
   }, []);
 
-  const filteredJobs = jobs.filter((job) =>
-    job.title.toLowerCase().includes(search.toLowerCase()) &&
-    (location ? job.location === location : true)
+  const filteredJobs = jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(search.toLowerCase()) &&
+      (location ? job.location === location : true) &&
+      (selectedCategory ? job.category === selectedCategory : true)
   );
 
   const categoryCards = [
-    { name: "Design", count: "235 jobs available", icon: "✕", highlighted: false },
-    { name: "Sales", count: "756 jobs available", icon: "◔", highlighted: false },
-    { name: "Marketing", count: "140 jobs available", icon: "📣", highlighted: true },
-    { name: "Finance", count: "325 jobs available", icon: "▣", highlighted: false },
-    { name: "Technology", count: "436 jobs available", icon: "▭", highlighted: false },
-    { name: "Engineering", count: "542 jobs available", icon: "</>", highlighted: false },
-    { name: "Business", count: "211 jobs available", icon: "◫", highlighted: false },
-    { name: "Human Resource", count: "346 jobs available", icon: "◍", highlighted: false },
+    { name: "Design", count: "235 jobs available", icon: "✕" },
+    { name: "Sales", count: "756 jobs available", icon: "◔" },
+    { name: "Marketing", count: "140 jobs available", icon: "📣" },
+    { name: "Finance", count: "325 jobs available", icon: "▣" },
+    { name: "Technology", count: "436 jobs available", icon: "▭" },
+    { name: "Engineering", count: "542 jobs available", icon: "</>" },
+    { name: "Business", count: "211 jobs available", icon: "◫" },
+    { name: "Human Resource", count: "346 jobs available", icon: "◍" },
   ];
 
   const featuredJobs = filteredJobs.slice(0, 8);
@@ -139,27 +142,34 @@ export default function Home() {
             <h2 className="text-4xl font-extrabold leading-tight text-slate-800">
               Explore by <span className="text-sky-500">category</span>
             </h2>
-            <Link href="/jobs" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <Link
+              href={selectedCategory ? `/jobs?category=${encodeURIComponent(selectedCategory)}` : "/jobs"}
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
+            >
               Show all jobs →
             </Link>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categoryCards.map((item) => (
-              <article
+              <button
                 key={item.name}
-                className={`rounded-md border p-5 transition ${
-                  item.highlighted
+                type="button"
+                onClick={() => setSelectedCategory((previous) => (previous === item.name ? "" : item.name))}
+                className={`rounded-md border p-5 text-left transition ${
+                  selectedCategory === item.name
                     ? "border-indigo-600 bg-indigo-600 text-white"
-                    : "border-slate-200 bg-white text-slate-800"
+                    : "border-slate-200 bg-white text-slate-800 hover:border-indigo-300 hover:bg-indigo-50"
                 }`}
               >
-                <p className={`text-xl ${item.highlighted ? "text-white" : "text-indigo-600"}`}>{item.icon}</p>
+                <p className={`text-xl ${selectedCategory === item.name ? "text-white" : "text-indigo-600"}`}>
+                  {item.icon}
+                </p>
                 <h3 className="mt-6 text-xl font-bold">{item.name}</h3>
-                <p className={`mt-2 text-sm ${item.highlighted ? "text-indigo-100" : "text-slate-500"}`}>
+                <p className={`mt-2 text-sm ${selectedCategory === item.name ? "text-indigo-100" : "text-slate-500"}`}>
                   {item.count} <span className="ml-1">→</span>
                 </p>
-              </article>
+              </button>
             ))}
           </div>
         </section>
