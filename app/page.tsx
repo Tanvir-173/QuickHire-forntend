@@ -66,9 +66,6 @@ export default function Home() {
               <Link href="/" className="hover:text-slate-700">
                 Browse Companies
               </Link>
-              <Link href="/admin" className="hover:text-slate-700">
-                Admin
-              </Link>
             </nav>
           </div>
 
