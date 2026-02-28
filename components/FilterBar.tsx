@@ -25,7 +25,6 @@ export default function FilterBar({
           </option>
         ))}
       </select>
-      <span className="text-xs text-slate-500">⌄</span>
     </div>
   );
 }

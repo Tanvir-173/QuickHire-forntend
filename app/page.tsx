@@ -101,7 +101,7 @@ export default function Home() {
                 <SearchBar search={search} setSearch={setSearch} />
                 <div className="hidden h-8 bg-slate-200 md:block" />
                 <FilterBar location={location} setLocation={setLocation} />
-                <button className="bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700">
+                <button className="bg-indigo-600 px-6 py-3 text-sm font-semibold text-white">
                   Search my job
                 </button>
               </div>
@@ -115,11 +115,13 @@ export default function Home() {
               <div className="absolute left-28 top-24 h-44 w-64 border-2 border-indigo-100" />
               <div className="absolute left-4 top-44 h-44 w-64 border-2 border-indigo-100" />
             </div>
-            <span className="absolute left-8 top-8 rounded bg-orange-500 px-2.5 py-1 text-xs font-semibold text-white">
-              Wasif Ahad
-            </span>
-            <div className="absolute bottom-0 right-0 flex h-[390px] w-[330px] items-center justify-center rounded-tl-[140px] bg-gradient-to-b from-slate-200 to-slate-300 text-sm text-slate-600">
-              Hero image
+            
+            <div className="absolute bottom-0 right-0 h-[390px] w-[330px] overflow-hidden rounded-tl-[140px] bg-gradient-to-b from-slate-200 to-slate-300">
+              <img
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80"
+                alt="Professional woman smiling"
+                className="h-full w-full object-cover"
+              />
             </div>
             <div className="absolute -bottom-8 right-0 h-28 w-full -skew-y-[18deg] bg-white" />
           </div>
