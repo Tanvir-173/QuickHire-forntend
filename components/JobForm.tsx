@@ -1,0 +1,94 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { createJob, CreateJobInput } from "@/lib/api";
+
+type JobFormProps = {
+  onSuccess: () => void;
+};
+
+const initialState: CreateJobInput = {
+  title: "",
+  company: "",
+  location: "",
+  category: "",
+  description: "",
+};
+
+export default function JobForm({ onSuccess }: JobFormProps) {
+  const [formData, setFormData] = useState<CreateJobInput>(initialState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    try {
+      await createJob(formData);
+      setFormData(initialState);
+      onSuccess();
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Failed to create job");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 className="text-lg font-semibold text-slate-900">Post New Job</h2>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <input
+          required
+          value={formData.title}
+          onChange={(event) => setFormData((prev) => ({ ...prev, title: event.target.value }))}
+          placeholder="Job title"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        />
+        <input
+          required
+          value={formData.company}
+          onChange={(event) => setFormData((prev) => ({ ...prev, company: event.target.value }))}
+          placeholder="Company"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        />
+        <input
+          required
+          value={formData.location}
+          onChange={(event) => setFormData((prev) => ({ ...prev, location: event.target.value }))}
+          placeholder="Location"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        />
+        <input
+          required
+          value={formData.category}
+          onChange={(event) => setFormData((prev) => ({ ...prev, category: event.target.value }))}
+          placeholder="Category"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        />
+      </div>
+
+      <textarea
+        required
+        rows={5}
+        value={formData.description}
+        onChange={(event) => setFormData((prev) => ({ ...prev, description: event.target.value }))}
+        placeholder="Job description"
+        className="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+      />
+
+      {errorMessage ? <p className="text-sm text-red-600">{errorMessage}</p> : null}
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+      >
+        {isSubmitting ? "Posting..." : "Post Job"}
+      </button>
+    </form>
+  );
+}
