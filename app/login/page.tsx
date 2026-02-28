@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { login } from "@/lib/api";
 
 export default function LoginPage() {
@@ -20,6 +21,7 @@ export default function LoginPage() {
     try {
       const response = await login({ email, password });
       setMessage(response.message);
+      toast.success(response.message || "Login successful");
 
       if (response.user.role === "admin") {
         router.push("/admin");
@@ -28,7 +30,9 @@ export default function LoginPage() {
 
       router.push("/");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Login failed");
+      const message = error instanceof Error ? error.message : "Login failed";
+      setMessage(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }

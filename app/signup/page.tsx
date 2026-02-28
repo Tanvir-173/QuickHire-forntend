@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 import { signup } from "@/lib/api";
 
 export default function SignupPage() {
@@ -19,6 +20,7 @@ export default function SignupPage() {
 
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -32,8 +34,11 @@ export default function SignupPage() {
       setConfirmPassword("");
       setRole("user");
       setMessage("Signup successful. You can now login.");
+      toast.success("Signup successful. You can now login.");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Signup failed");
+      const message = error instanceof Error ? error.message : "Signup failed";
+      setMessage(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }

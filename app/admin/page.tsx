@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { getJobs, deleteJob, Job } from "@/lib/api";
 import JobForm from "@/components/JobForm";
 
@@ -15,7 +17,9 @@ export default function Admin() {
       setJobs(data);
       setErrorMessage("");
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Failed to load jobs");
+      const message = error instanceof Error ? error.message : "Failed to load jobs";
+      setErrorMessage(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -28,20 +32,32 @@ export default function Admin() {
   const handleJobCreated = (job: Job) => {
     setJobs((previousJobs) => [job, ...previousJobs]);
     setErrorMessage("");
+    toast.success("Job posted successfully");
   };
 
   const handleDelete = async (id: string) => {
     try {
       await deleteJob(id);
       setJobs((previousJobs) => previousJobs.filter((job) => job._id !== id));
+      toast.success("Job deleted successfully");
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Failed to delete job");
+      const message = error instanceof Error ? error.message : "Failed to delete job";
+      setErrorMessage(message);
+      toast.error(message);
     }
   };
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6">
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">Admin Panel</h1>
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold text-slate-900">Admin Panel</h1>
+        <Link
+          href="/"
+          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Home
+        </Link>
+      </div>
 
       <JobForm onSuccess={handleJobCreated} />
 
