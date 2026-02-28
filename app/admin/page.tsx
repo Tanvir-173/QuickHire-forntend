@@ -25,10 +25,15 @@ export default function Admin() {
     fetchJobs();
   }, []);
 
+  const handleJobCreated = (job: Job) => {
+    setJobs((previousJobs) => [job, ...previousJobs]);
+    setErrorMessage("");
+  };
+
   const handleDelete = async (id: string) => {
     try {
       await deleteJob(id);
-      fetchJobs();
+      setJobs((previousJobs) => previousJobs.filter((job) => job._id !== id));
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Failed to delete job");
     }
@@ -38,7 +43,7 @@ export default function Admin() {
     <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6">
       <h1 className="mb-6 text-2xl font-bold text-slate-900">Admin Panel</h1>
 
-      <JobForm onSuccess={fetchJobs} />
+      <JobForm onSuccess={handleJobCreated} />
 
       {isLoading ? <p className="mt-6 text-sm text-slate-600">Loading jobs...</p> : null}
       {errorMessage ? <p className="mt-6 text-sm text-red-600">{errorMessage}</p> : null}

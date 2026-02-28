@@ -1,10 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { createJob, CreateJobInput } from "@/lib/api";
+import { createJob, CreateJobInput, Job } from "@/lib/api";
 
 type JobFormProps = {
-  onSuccess: () => void;
+  onSuccess: (job: Job) => void;
 };
 
 const initialState: CreateJobInput = {
@@ -37,9 +37,9 @@ export default function JobForm({ onSuccess }: JobFormProps) {
     setIsSubmitting(true);
 
     try {
-      await createJob(formData);
+      const createdJob = await createJob(formData);
       setFormData(initialState);
-      onSuccess();
+      onSuccess(createdJob);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Failed to create job");
     } finally {
