@@ -15,6 +15,17 @@ const initialState: CreateJobInput = {
   description: "",
 };
 
+const CATEGORY_OPTIONS = [
+  "Design",
+  "Sales",
+  "Marketing",
+  "Finance",
+  "Technology",
+  "Engineering",
+  "Business",
+  "Human Resource",
+];
+
 export default function JobForm({ onSuccess }: JobFormProps) {
   const [formData, setFormData] = useState<CreateJobInput>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,13 +73,19 @@ export default function JobForm({ onSuccess }: JobFormProps) {
           placeholder="Location"
           className="rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
         />
-        <input
+        <select
           required
           value={formData.category}
           onChange={(event) => setFormData((prev) => ({ ...prev, category: event.target.value }))}
-          placeholder="Category"
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-        />
+          className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        >
+          <option value="">Select category</option>
+          {CATEGORY_OPTIONS.map((categoryOption) => (
+            <option key={categoryOption} value={categoryOption}>
+              {categoryOption}
+            </option>
+          ))}
+        </select>
       </div>
 
       <textarea
