@@ -142,9 +142,9 @@ export default function Home() {
             <h2 className="text-4xl font-extrabold leading-tight text-slate-800">
               Explore by <span className="text-sky-500">category</span>
             </h2>
-            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <Link href="/jobs" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
               Show all jobs →
-            </button>
+            </Link>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -208,9 +208,9 @@ export default function Home() {
             <h2 className="text-4xl font-extrabold leading-tight text-slate-800">
               Featured <span className="text-sky-500">jobs</span>
             </h2>
-            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <Link href="/jobs" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
               Show all jobs →
-            </button>
+            </Link>
           </div>
 
           {isLoading ? <p className="mt-3 text-sm text-slate-600">Loading jobs...</p> : null}
@@ -256,9 +256,9 @@ export default function Home() {
             <h2 className="text-4xl font-extrabold leading-tight text-slate-800">
               Latest <span className="text-sky-500">jobs open</span>
             </h2>
-            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <Link href="/jobs" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
               Show all jobs →
-            </button>
+            </Link>
           </div>
 
           {isLoading ? <p className="mt-3 text-sm text-slate-600">Loading jobs...</p> : null}
