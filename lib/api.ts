@@ -1,4 +1,15 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const normalizeApiUrl = (value?: string) => {
+  const fallback = "http://localhost:5000/api";
+  const raw = (value || fallback).trim().replace(/\/+$/, "");
+
+  if (raw.endsWith("/api")) {
+    return raw;
+  }
+
+  return `${raw}/api`;
+};
+
+const API_URL = normalizeApiUrl(process.env.NEXT_PUBLIC_API_URL);
 
 export type Job = {
   _id: string;

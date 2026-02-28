@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { getJobs, Job } from "@/lib/api";
 import JobCard from "@/components/JobCard";
 
-export default function AllJobsPage() {
+function AllJobsContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "";
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -108,5 +108,13 @@ export default function AllJobsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function AllJobsPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-[#f2f3f9] px-4 py-8 sm:px-6">Loading...</main>}>
+      <AllJobsContent />
+    </Suspense>
   );
 }
